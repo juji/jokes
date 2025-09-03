@@ -22,6 +22,10 @@ use utoipa::OpenApi;
     crate::routes::upload::upload_multiple_files,
     crate::routes::upload::upload_with_metadata,
     crate::routes::upload::upload_base64,
+    crate::routes::validation::info::validation_info,
+    crate::routes::validation::json::validate_json,
+    crate::routes::validation::form::validate_form,
+    crate::routes::validation::upload::validate_upload,
   ),
   components(
     schemas(
@@ -30,6 +34,16 @@ use utoipa::OpenApi;
       crate::routes::upload::Base64UploadRequest,
       crate::routes::upload::UploadResponse,
       crate::routes::upload::FileInfo,
+      crate::routes::validation::json::JsonValidationRequest,
+      crate::routes::validation::json::JsonValidationResponse,
+      crate::routes::validation::json::JsonValidationError,
+      crate::routes::validation::form::FormValidationRequest,
+      crate::routes::validation::form::FormValidationResponse,
+      crate::routes::validation::form::FormValidationError,
+      crate::routes::validation::upload::UploadValidationRequest,
+      crate::routes::validation::upload::UploadValidationResponse,
+      crate::routes::validation::upload::UploadValidationError,
+      crate::routes::validation::upload::FileValidationInfo,
     )
   ),
   tags(
@@ -37,7 +51,8 @@ use utoipa::OpenApi;
     (name = "greetings", description = "Greeting endpoints"),
     (name = "method", description = "HTTP method demonstrations"),
     (name = "query", description = "Query parameter handling"),
-    (name = "upload", description = "File upload demonstrations")
+    (name = "upload", description = "File upload demonstrations"),
+    (name = "validation", description = "Data validation endpoints")
   )
 )]
 pub struct ApiDoc;
