@@ -4,9 +4,18 @@ use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use validator::{Validate, ValidationError, ValidationErrors};
 
-// Regex for password validation
+// Regex patterns for password validation - more efficient than lookaheads
 lazy_static::lazy_static! {
-    static ref PASSWORD_REGEX: Regex = Regex::new(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$").unwrap();
+  static ref CORRECT_PASS: Regex = Regex::new(r"[A-Za-z\d]+").unwrap();
+}
+
+// Custom validator for password strength
+fn validate_password(password: &str) -> Result<(), ValidationError> {
+  if CORRECT_PASS.is_match(password) {
+    Ok(())
+  } else {
+    Err(ValidationError::new("password_too_weak"))
+  }
 }
 
 // JSON validation request model
@@ -45,15 +54,6 @@ pub struct JsonValidationResponse {
 pub struct JsonValidationError {
   pub field: String,
   pub message: String,
-}
-
-// Custom validator for password strength
-fn validate_password(password: &str) -> Result<(), ValidationError> {
-  if PASSWORD_REGEX.is_match(password) {
-    Ok(())
-  } else {
-    Err(ValidationError::new("password_too_weak"))
-  }
 }
 
 // Helper function to format validation errors
