@@ -4,37 +4,47 @@ use base64::{engine::general_purpose, Engine as _};
 use futures_util::TryStreamExt as _;
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use utoipa::ToSchema;
 
 // Structs for POST request bodies
-#[derive(Deserialize, Serialize)]
-struct Base64UploadRequest {
-  filename: String,
-  data: String, // base64 encoded data
+#[derive(Deserialize, Serialize, ToSchema)]
+pub struct Base64UploadRequest {
+  pub filename: String,
+  pub data: String, // base64 encoded data
   #[serde(skip_serializing_if = "Option::is_none")]
-  description: Option<String>,
+  pub description: Option<String>,
 }
 
-#[derive(Serialize)]
-struct UploadResponse {
-  message: String,
-  files: Vec<FileInfo>,
+#[derive(Serialize, ToSchema)]
+pub struct UploadResponse {
+  pub message: String,
+  pub files: Vec<FileInfo>,
   #[serde(skip_serializing_if = "Option::is_none")]
-  form_data: Option<std::collections::HashMap<String, String>>,
+  pub form_data: Option<std::collections::HashMap<String, String>>,
   #[serde(skip_serializing_if = "Option::is_none")]
-  total_files: Option<usize>,
+  pub total_files: Option<usize>,
 }
 
-#[derive(Serialize)]
-struct FileInfo {
-  filename: String,
-  size: usize,
-  status: String,
+#[derive(Serialize, ToSchema)]
+pub struct FileInfo {
+  pub filename: String,
+  pub size: usize,
+  pub status: String,
   #[serde(skip_serializing_if = "Option::is_none")]
-  field_name: Option<String>,
+  pub field_name: Option<String>,
 }
 
 // Single file upload handler - just echo info, don't save
-async fn upload_single_file(mut payload: Multipart) -> Result<HttpResponse> {
+/// Upload a single file
+#[utoipa::path(
+  post,
+  path = "/upload/single",
+  responses(
+    (status = 200, description = "Single file upload processed", body = UploadResponse)
+  ),
+  tag = "upload"
+)]
+pub async fn upload_single_file(mut payload: Multipart) -> Result<HttpResponse> {
   let mut uploaded_files = Vec::new();
 
   while let Some(mut field) = payload.try_next().await? {
@@ -71,7 +81,16 @@ async fn upload_single_file(mut payload: Multipart) -> Result<HttpResponse> {
 }
 
 // Multiple files upload handler - just echo info, don't save
-async fn upload_multiple_files(mut payload: Multipart) -> Result<HttpResponse> {
+/// Upload multiple files
+#[utoipa::path(
+  post,
+  path = "/upload/multiple",
+  responses(
+    (status = 200, description = "Multiple files upload processed", body = UploadResponse)
+  ),
+  tag = "upload"
+)]
+pub async fn upload_multiple_files(mut payload: Multipart) -> Result<HttpResponse> {
   let mut uploaded_files = Vec::new();
   let mut field_count = 0;
 
@@ -110,7 +129,16 @@ async fn upload_multiple_files(mut payload: Multipart) -> Result<HttpResponse> {
 }
 
 // Upload with metadata - echo info, don't save
-async fn upload_with_metadata(mut payload: Multipart) -> Result<HttpResponse> {
+/// Upload files with metadata
+#[utoipa::path(
+  post,
+  path = "/upload/metadata",
+  responses(
+    (status = 200, description = "Upload with metadata processed", body = UploadResponse)
+  ),
+  tag = "upload"
+)]
+pub async fn upload_with_metadata(mut payload: Multipart) -> Result<HttpResponse> {
   let mut uploaded_files = Vec::new();
   let mut form_data = std::collections::HashMap::new();
 
@@ -163,7 +191,18 @@ async fn upload_with_metadata(mut payload: Multipart) -> Result<HttpResponse> {
 }
 
 // Base64 upload handler - just echo info, don't save
-async fn upload_base64(data: web::Json<Base64UploadRequest>) -> Result<HttpResponse> {
+/// Upload base64 encoded file
+#[utoipa::path(
+  post,
+  path = "/upload/base64",
+  request_body = Base64UploadRequest,
+  responses(
+    (status = 200, description = "Base64 upload processed", body = UploadResponse),
+    (status = 400, description = "Invalid base64 data")
+  ),
+  tag = "upload"
+)]
+pub async fn upload_base64(data: web::Json<Base64UploadRequest>) -> Result<HttpResponse> {
   // Decode base64 to calculate size but don't save
   match general_purpose::STANDARD.decode(&data.data) {
     Ok(decoded_data) => {
@@ -194,7 +233,16 @@ async fn upload_base64(data: web::Json<Base64UploadRequest>) -> Result<HttpRespo
 }
 
 // Upload info/status endpoint
-async fn upload_info() -> Result<HttpResponse> {
+/// Get upload endpoint information
+#[utoipa::path(
+  get,
+  path = "/upload/info",
+  responses(
+    (status = 200, description = "Upload endpoints information")
+  ),
+  tag = "upload"
+)]
+pub async fn upload_info() -> Result<HttpResponse> {
   let response = json!({
       "endpoints": {
           "/upload/single": "POST - Upload a single file (multipart/form-data) - echoes filename and size",

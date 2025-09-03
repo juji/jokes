@@ -1,6 +1,19 @@
 use actix_web::{web, HttpResponse, Result};
+use utoipa;
 
-async fn hello_name(path: web::Path<String>) -> Result<HttpResponse> {
+/// Personalized hello endpoint
+#[utoipa::path(
+  get,
+  path = "/hello/{name}",
+  responses(
+    (status = 200, description = "Personalized hello message", body = String)
+  ),
+  params(
+    ("name" = String, Path, description = "Name to greet")
+  ),
+  tag = "greetings"
+)]
+pub async fn hello_name(path: web::Path<String>) -> Result<HttpResponse> {
   let name = path.into_inner();
   Ok(HttpResponse::Ok().body(format!("Hello, {}!", name)))
 }

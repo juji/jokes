@@ -1,16 +1,26 @@
 use actix_web::{web, HttpResponse, Result};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
+use utoipa::ToSchema;
 
-#[derive(Deserialize, Serialize)]
-struct ResourceData {
-  id: Option<u32>,
-  name: String,
-  description: Option<String>,
+#[derive(Deserialize, Serialize, ToSchema)]
+pub struct ResourceData {
+  pub id: Option<u32>,
+  pub name: String,
+  pub description: Option<String>,
 }
 
 // POST - Create a new resource
-async fn create_resource(data: web::Json<ResourceData>) -> Result<HttpResponse> {
+#[utoipa::path(
+  post,
+  path = "/method",
+  tag = "method",
+  request_body = ResourceData,
+  responses(
+    (status = 201, description = "Resource created successfully"),
+  )
+)]
+pub async fn create_resource(data: web::Json<ResourceData>) -> Result<HttpResponse> {
   let response = json!({
       "method": "POST",
       "action": "create",
@@ -22,7 +32,19 @@ async fn create_resource(data: web::Json<ResourceData>) -> Result<HttpResponse> 
 }
 
 // PUT - Update an existing resource
-async fn update_resource(
+#[utoipa::path(
+  put,
+  path = "/method/{id}",
+  tag = "method",
+  request_body = ResourceData,
+  params(
+    ("id" = u32, Path, description = "Resource ID")
+  ),
+  responses(
+    (status = 200, description = "Resource updated successfully"),
+  )
+)]
+pub async fn update_resource(
   path: web::Path<u32>,
   data: web::Json<ResourceData>,
 ) -> Result<HttpResponse> {
@@ -40,7 +62,18 @@ async fn update_resource(
 }
 
 // PATCH - Partially update an existing resource
-async fn patch_resource(
+#[utoipa::path(
+  patch,
+  path = "/method/{id}",
+  tag = "method",
+  params(
+    ("id" = u32, Path, description = "Resource ID")
+  ),
+  responses(
+    (status = 200, description = "Resource partially updated successfully"),
+  )
+)]
+pub async fn patch_resource(
   path: web::Path<u32>,
   data: web::Json<serde_json::Value>,
 ) -> Result<HttpResponse> {
@@ -58,7 +91,18 @@ async fn patch_resource(
 }
 
 // DELETE - Delete a resource
-async fn delete_resource(path: web::Path<u32>) -> Result<HttpResponse> {
+#[utoipa::path(
+  delete,
+  path = "/method/{id}",
+  tag = "method",
+  params(
+    ("id" = u32, Path, description = "Resource ID")
+  ),
+  responses(
+    (status = 200, description = "Resource deleted successfully"),
+  )
+)]
+pub async fn delete_resource(path: web::Path<u32>) -> Result<HttpResponse> {
   let id = path.into_inner();
 
   let response = json!({
@@ -74,7 +118,19 @@ async fn delete_resource(path: web::Path<u32>) -> Result<HttpResponse> {
 // GET - For comparison (retrieve a resource)
 // Note: HEAD requests will automatically be handled by Actix Web
 // by calling this GET handler and stripping the response body
-async fn get_resource(path: web::Path<u32>) -> Result<HttpResponse> {
+#[utoipa::path(
+  get,
+  path = "/method/{id}",
+  tag = "method",
+  params(
+    ("id" = u32, Path, description = "Resource ID")
+  ),
+  responses(
+    (status = 200, description = "Resource retrieved successfully"),
+    (status = 404, description = "Resource not found")
+  )
+)]
+pub async fn get_resource(path: web::Path<u32>) -> Result<HttpResponse> {
   let id = path.into_inner();
 
   let response = json!({
