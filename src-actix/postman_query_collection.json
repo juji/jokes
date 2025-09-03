@@ -1,0 +1,526 @@
+{
+  "info": {
+    "name": "Actix Jokes API - All Routes",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Complete Postman collection for testing all routes in the Actix Web application. Assumes server is running on http://127.0.0.1:8080 by default."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8080",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Root",
+      "item": [
+        {
+          "name": "GET Root - Hello World",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/",
+              "host": ["{{base_url}}"],
+              "path": [""]
+            },
+            "description": "Get the root endpoint response."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Greetings",
+      "item": [
+        {
+          "name": "GET Hello with Name",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/hello/John",
+              "host": ["{{base_url}}"],
+              "path": ["hello", "John"]
+            },
+            "description": "Get a personalized hello message."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Method Examples",
+      "item": [
+        {
+          "name": "POST Create Resource",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Sample Resource\",\n  \"description\": \"A test resource\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/method",
+              "host": ["{{base_url}}"],
+              "path": ["method"]
+            },
+            "description": "Create a new resource."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Retrieve Resource",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/method/1",
+              "host": ["{{base_url}}"],
+              "path": ["method", "1"]
+            },
+            "description": "Retrieve a resource by ID."
+          },
+          "response": []
+        },
+        {
+          "name": "PUT Update Resource",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 1,\n  \"name\": \"Updated Resource\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/method/1",
+              "host": ["{{base_url}}"],
+              "path": ["method", "1"]
+            },
+            "description": "Update an existing resource."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH Partial Update Resource",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Partially updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/method/1",
+              "host": ["{{base_url}}"],
+              "path": ["method", "1"]
+            },
+            "description": "Partially update a resource."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE Resource",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/method/1",
+              "host": ["{{base_url}}"],
+              "path": ["method", "1"]
+            },
+            "description": "Delete a resource by ID."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Query Parameters",
+      "item": [
+        {
+          "name": "GET Unstructured Query - With Params",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/query/unstructured?key1=value1&key2=value2&flag",
+              "host": ["{{base_url}}"],
+              "path": ["query", "unstructured"],
+              "query": [
+                {
+                  "key": "key1",
+                  "value": "value1"
+                },
+                {
+                  "key": "key2",
+                  "value": "value2"
+                },
+                {
+                  "key": "flag",
+                  "value": null
+                }
+              ]
+            },
+            "description": "Test unstructured query parameters."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Unstructured Query - No Params",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/query/unstructured",
+              "host": ["{{base_url}}"],
+              "path": ["query", "unstructured"]
+            },
+            "description": "Test unstructured query without parameters."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Structured Query - With Params",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/query/structured?q=search&page=1&limit=10&sort=name",
+              "host": ["{{base_url}}"],
+              "path": ["query", "structured"],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "search"
+                },
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "name"
+                }
+              ]
+            },
+            "description": "Test structured query parameters."
+          },
+          "response": []
+        },
+        {
+          "name": "GET Structured Query - No Params",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/query/structured",
+              "host": ["{{base_url}}"],
+              "path": ["query", "structured"]
+            },
+            "description": "Test structured query without parameters."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "File Upload",
+      "item": [
+        {
+          "name": "GET Upload Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/upload/info",
+              "host": ["{{base_url}}"],
+              "path": ["upload", "info"]
+            },
+            "description": "Get information about upload endpoints."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Single File Upload",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/upload/single",
+              "host": ["{{base_url}}"],
+              "path": ["upload", "single"]
+            },
+            "description": "Upload a single file."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Multiple Files Upload",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file1",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "file2",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/upload/multiple",
+              "host": ["{{base_url}}"],
+              "path": ["upload", "multiple"]
+            },
+            "description": "Upload multiple files."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Upload with Metadata",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "metadata",
+                  "value": "Sample metadata",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/upload/metadata",
+              "host": ["{{base_url}}"],
+              "path": ["upload", "metadata"]
+            },
+            "description": "Upload files with metadata."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Base64 Upload",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"filename\": \"test.txt\",\n  \"data\": \"SGVsbG8gV29ybGQ=\",\n  \"description\": \"Base64 encoded file\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/upload/base64",
+              "host": ["{{base_url}}"],
+              "path": ["upload", "base64"]
+            },
+            "description": "Upload a base64 encoded file."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Validation",
+      "item": [
+        {
+          "name": "GET Validation Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/validate/info",
+              "host": ["{{base_url}}"],
+              "path": ["validate", "info"]
+            },
+            "description": "Get information about validation endpoints."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Validate JSON - Valid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"age\": 25,\n  \"website\": \"https://example.com\",\n  \"password\": \"Password123\",\n  \"confirm_password\": \"Password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/validate/json",
+              "host": ["{{base_url}}"],
+              "path": ["validate", "json"]
+            },
+            "description": "Validate valid JSON data."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Validate JSON - Invalid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"J\",\n  \"email\": \"invalid-email\",\n  \"age\": 15,\n  \"password\": \"weak\",\n  \"confirm_password\": \"different\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/validate/json",
+              "host": ["{{base_url}}"],
+              "path": ["validate", "json"]
+            },
+            "description": "Validate invalid JSON data to see error responses."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Validate Form - Valid",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "first_name",
+                  "value": "John",
+                  "type": "text"
+                },
+                {
+                  "key": "last_name",
+                  "value": "Doe",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "john@example.com",
+                  "type": "text"
+                },
+                {
+                  "key": "phone",
+                  "value": "(123) 456-7890",
+                  "type": "text"
+                },
+                {
+                  "key": "message",
+                  "value": "This is a test message with enough content to pass validation.",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/validate/form",
+              "host": ["{{base_url}}"],
+              "path": ["validate", "form"]
+            },
+            "description": "Validate valid form data."
+          },
+          "response": []
+        },
+        {
+          "name": "POST Validate Upload - Valid",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "title",
+                  "value": "Sample Upload",
+                  "type": "text"
+                },
+                {
+                  "key": "description",
+                  "value": "Test description",
+                  "type": "text"
+                },
+                {
+                  "key": "category",
+                  "value": "document",
+                  "type": "text"
+                },
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{base_url}}/validate/upload",
+              "host": ["{{base_url}}"],
+              "path": ["validate", "upload"]
+            },
+            "description": "Validate multipart upload with valid data."
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
