@@ -1,0 +1,28 @@
+# Rust build artifacts
+target/
+Cargo.lock
+
+# Git
+.git/
+.gitignore
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+docs/
+
+# Docker files
+Dockerfile
+.dockerignore
+
+# CI/CD
+.github/
