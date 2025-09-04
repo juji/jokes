@@ -76,18 +76,38 @@ pub async fn retrieve_jokes(
                 };
                 
                 // Extract content for database based on joke type
-                let joke_json = if joke_type == "single" {
-                    serde_json::json!({
-                        "content": joke.joke.content,
-                        "setup": null,
-                        "punchline": null
-                    })
-                } else {
-                    serde_json::json!({
-                        "content": null,
-                        "setup": joke.joke.setup,
-                        "punchline": joke.joke.punchline
-                    })
+                let joke_json = match joke_type {
+                    "single" => {
+                        if let Some(content) = &joke.joke.content {
+                            // For single jokes, ensure content exists and setup/punchline are absent
+                            serde_json::json!({
+                                "content": content,
+                                // Do not include setup and punchline at all (not even as null)
+                            })
+                        } else {
+                            // If single joke has no content, this will fail the check constraint
+                            eprintln!("Warning: Single joke missing content field");
+                            continue; // Skip this joke
+                        }
+                    },
+                    "twopart" => {
+                        if let (Some(setup), Some(punchline)) = (&joke.joke.setup, &joke.joke.punchline) {
+                            // For twopart jokes, ensure setup and punchline exist and content is absent
+                            serde_json::json!({
+                                "setup": setup,
+                                "punchline": punchline,
+                                // Do not include content at all (not even as null)
+                            })
+                        } else {
+                            // If twopart joke is missing setup or punchline, this will fail the check constraint
+                            eprintln!("Warning: Twopart joke missing setup or punchline fields");
+                            continue; // Skip this joke
+                        }
+                    },
+                    _ => {
+                        eprintln!("Warning: Unknown joke type: {}", joke_type);
+                        continue; // Skip this joke
+                    }
                 };
                 
                 // Store data for this joke - we'll only keep one entry per (external_id, provider)
