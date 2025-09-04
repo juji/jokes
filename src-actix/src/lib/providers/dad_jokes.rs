@@ -1,4 +1,4 @@
-use crate::providers::types::{Joke, JokeContent, JokeProvider, JokeType};
+use super::types::{Joke, JokeContent, JokeProvider, JokeType};
 use async_trait::async_trait;
 use reqwest::Client;
 

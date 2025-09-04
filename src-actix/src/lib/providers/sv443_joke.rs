@@ -1,21 +1,20 @@
-use crate::providers::types::{Joke, JokeContent, JokeProvider, JokeType};
+use super::types::{Joke, JokeContent, JokeProvider, JokeType};
 use async_trait::async_trait;
 use reqwest::Client;
 use serde_json::Value;
 
-pub struct JokesApiProvider {
+pub struct Sv443JokeProvider {
     client: Client,
     categories: Vec<String>,
 }
 
-impl JokesApiProvider {
+impl Sv443JokeProvider {
     pub fn new() -> Self {
         Self {
             client: Client::new(),
             categories: vec![
-                "any".to_string(),
-                "miscellaneous".to_string(),
                 "programming".to_string(),
+                "miscellaneous".to_string(),
                 "dark".to_string(),
                 "pun".to_string(),
                 "spooky".to_string(),
@@ -26,17 +25,17 @@ impl JokesApiProvider {
 }
 
 #[async_trait]
-impl JokeProvider for JokesApiProvider {
+impl JokeProvider for Sv443JokeProvider {
     fn name(&self) -> &str {
-        "JokesAPI (jokeapi.dev)"
+        "Sv443 JokeAPI"
     }
 
     fn base_url(&self) -> &str {
-        "https://v2.jokeapi.dev"
+        "https://sv443.net/jokeapi/v2"
     }
 
     async fn get_random_joke(&self) -> Result<Joke, Box<dyn std::error::Error + Send + Sync>> {
-        let url = format!("{}/joke/Any?safe-mode", self.base_url());
+        let url = format!("{}/joke/Any?safe-mode&type=single,twopart", self.base_url());
         let response = self.client.get(&url).send().await?;
         let data: Value = response.json().await?;
         Ok(self.normalize_joke(data))
@@ -48,7 +47,7 @@ impl JokeProvider for JokesApiProvider {
         } else {
             "Any"
         };
-        let url = format!("{}/joke/{}?safe-mode", self.base_url(), valid_category);
+        let url = format!("{}/joke/{}?safe-mode&type=single,twopart", self.base_url(), valid_category);
         let response = self.client.get(&url).send().await?;
         let data: Value = response.json().await?;
         Ok(self.normalize_joke(data))
@@ -59,7 +58,7 @@ impl JokeProvider for JokesApiProvider {
     }
 }
 
-impl JokesApiProvider {
+impl Sv443JokeProvider {
     fn normalize_joke(&self, data: Value) -> Joke {
         if data["type"] == "single" {
             Joke {

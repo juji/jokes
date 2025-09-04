@@ -1,4 +1,4 @@
-use crate::providers::types::{Joke, JokeProvider};
+use super::types::{Joke, JokeProvider};
 use rand::Rng;
 use std::sync::Arc;
 
@@ -13,7 +13,7 @@ impl JokeManager {
     }
 
     pub fn with_all_providers() -> Self {
-        Self::new(crate::providers::ALL_PROVIDERS.clone())
+        Self::new(super::ALL_PROVIDERS.clone())
     }
 
     /// Get a random joke from a random provider

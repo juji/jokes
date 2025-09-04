@@ -7,11 +7,30 @@ mod api_doc;
 mod routes;
 
 use api_doc::ApiDoc;
+use actix_jokes::db;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
   // Load environment variables from .env file if it exists
   dotenvy::dotenv().ok();
+
+  // Get database URL from environment variables
+  let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+
+  // Initialize database connection
+  println!("Initializing database connection...");
+  if let Err(e) = db::init(&database_url).await {
+    eprintln!("Failed to initialize database: {}", e);
+    eprintln!("Please ensure PostgreSQL is running and DATABASE_URL is set correctly.");
+    std::process::exit(1);
+  }
+
+  // Run database migrations
+  println!("Running database migrations...");
+  if let Err(e) = db::migrate().await {
+    eprintln!("Failed to run migrations: {}", e);
+    std::process::exit(1);
+  }
 
   // Get host and port from environment variables with defaults
   let host = env::var("HOST").unwrap_or_else(|_| "127.0.0.1".to_string());
