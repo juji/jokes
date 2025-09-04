@@ -11,7 +11,7 @@ use utoipa;
   tag = "root"
 )]
 pub async fn hello() -> Result<HttpResponse> {
-  Ok(HttpResponse::Ok().body("Hello, World!"))
+  Ok(HttpResponse::Ok().body("Hello, World! v1.0"))
 }
 
 pub fn configure(cfg: &mut web::ServiceConfig) {
