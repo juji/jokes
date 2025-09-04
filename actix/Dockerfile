@@ -1,10 +1,11 @@
 # Build stage
-FROM rust:1.75-slim as builder
+FROM rustlang/rust:nightly-slim AS builder
 
 # Install required packages for building
 RUN apt-get update && apt-get install -y \
     pkg-config \
     libssl-dev \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Create app directory
