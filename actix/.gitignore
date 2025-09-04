@@ -1,0 +1,84 @@
+# Rust build artifacts
+target/
+Cargo.lock
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+
+# Log files
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+
+# Docker volumes (if any)
+volumes/
+
+# Node.js (if frontend is added later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python (if any scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Documentation build
+book/
+
+# Test coverage
+coverage/
+*.profraw
+
+# Cargo fmt
+rustfmt.toml
+
+# Clippy
+clippy.toml
+
+# Performance profiling
+perf.data
+perf.data.old
+
+# Flamegraph
+flamegraph.svg
+
+# Heap dumps
+*.hprof
+
+# Core dumps
+core
+core.*
+
+# Application specific
+# Add any application-specific files to ignore here
