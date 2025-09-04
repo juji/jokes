@@ -9,9 +9,9 @@ mod routes;
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     let port = env::var("PORT")
-        .unwrap_or_else(|_| "8080".to_string())
+        .unwrap_or_else(|_| "3333".to_string())
         .parse::<u16>()
-        .unwrap_or(8080);
+        .unwrap_or(3333);
 
     println!("Starting Actix Web server on http://localhost:{}", port);
     println!("Swagger UI available at http://localhost:{}/swagger-ui/", port);

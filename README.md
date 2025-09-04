@@ -66,7 +66,7 @@ This repository contains two implementations of a jokes API:
 cd actix
 cargo run
 ```
-Server starts at: http://localhost:8080
+Server starts at: http://localhost:3333
 
 #### Option 2: Docker
 ```bash
@@ -95,7 +95,7 @@ PORT=3000 docker-compose up
 - **OpenAPI Spec:** `/api-docs/openapi.json`
 
 ### actix
-- **Swagger UI:** `http://localhost:8080/swagger-ui/`
+- **Swagger UI:** `http://localhost:3333/swagger-ui/`
 - **OpenAPI Spec:** `/api-docs/openapi.json`
 
 ## 🐳 Docker Support (actix)
@@ -108,11 +108,11 @@ docker build -t actix-api .
 
 ### Run Container
 ```bash
-# Default port 8080
-docker run -p 8080:8080 actix-api
+# Default port 3333
+docker run -p 3333:3333 actix-api
 
 # Custom port
-docker run -p 3000:8080 -e PORT=8080 actix-api
+docker run -p 3000:3333 -e PORT=3333 actix-api
 ```
 
 ### Docker Compose
