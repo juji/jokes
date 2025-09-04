@@ -1,15 +1,18 @@
 version: '3.8'
 
+# this shows how a different port can be used
+# simply change the PORT environment variable
+
 services:
   actix-api:
     build: .
     ports:
-      - "${PORT:-3333}:3333"
+      - "${PORT:-8888}:8888"
     environment:
-      - PORT=3333
+      - PORT=8888
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3333/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8888/"]
       interval: 30s
       timeout: 10s
       retries: 3
