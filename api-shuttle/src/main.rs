@@ -1,4 +1,4 @@
-use actix_web::web::ServiceConfig;
+use actix_web::web::{ServiceConfig, Data};
 use shuttle_actix_web::ShuttleActixWeb;
 use sqlx::PgPool;
 use utoipa::OpenApi;
@@ -9,6 +9,7 @@ mod api_doc;
 mod routes;
 
 use agitated_chebyshev::db;
+use agitated_chebyshev::lib::providers::manager::JokeManager;
 use api_doc::ApiDoc;
 use shuttle_runtime::SecretStore;
 
@@ -31,11 +32,15 @@ async fn main(
     // Run database migrations
     db::migrate().await.expect("Failed to run migrations");
 
+    // Create the joke manager
+    let joke_manager = JokeManager::with_all_providers();
+
     let config = move |cfg: &mut ServiceConfig| {
-        cfg.configure(routes::configure_routes)
-            .service(
+        cfg.app_data(Data::new(joke_manager.clone()))
+           .configure(routes::configure_routes)
+           .service(
                 SwaggerUi::new("/swagger-ui/{_:.*}").url("/api-docs/openapi.json", ApiDoc::openapi()),
-            );
+           );
     };
 
     Ok(config.into())

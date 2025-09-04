@@ -10,6 +10,7 @@ use utoipa::OpenApi;
   paths(
     crate::routes::root::hello,
     crate::routes::hello::hello_name,
+    crate::routes::jokes::retrieve::retrieve_jokes,
     crate::routes::method::create_resource,
     crate::routes::method::get_resource,
     crate::routes::method::update_resource,
@@ -30,6 +31,9 @@ use utoipa::OpenApi;
   components(
     schemas(
       crate::routes::method::ResourceData,
+      crate::routes::jokes::retrieve::RetrieveJokesParams,
+      crate::routes::jokes::retrieve::JokeResponse,
+      crate::routes::jokes::retrieve::JokeSummary,
       crate::routes::query::structured::SearchQuery,
       crate::routes::upload::Base64UploadRequest,
       crate::routes::upload::UploadResponse,
@@ -49,6 +53,7 @@ use utoipa::OpenApi;
   tags(
     (name = "root", description = "Root endpoint"),
     (name = "greetings", description = "Greeting endpoints"),
+    (name = "jokes", description = "Joke retrieval and management endpoints"),
     (name = "method", description = "HTTP method demonstrations"),
     (name = "query", description = "Query parameter handling"),
     (name = "upload", description = "File upload demonstrations"),

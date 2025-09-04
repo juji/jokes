@@ -69,17 +69,27 @@ impl JokeManager {
         })
     }
 
-    /// Get multiple jokes from random providers
+    /// Get multiple jokes from random providers in parallel
     pub async fn get_multiple_jokes(&self, count: usize) -> Result<Vec<JokeWithProvider>, Box<dyn std::error::Error + Send + Sync>> {
-        let mut jokes = Vec::new();
-
-        for _ in 0..count {
-            match self.get_random_joke().await {
-                Ok(joke) => jokes.push(joke),
-                Err(e) => eprintln!("Failed to get joke: {}", e),
-            }
-        }
-
+        use futures::future::join_all;
+        
+        let futures = (0..count)
+            .map(|_| self.get_random_joke())
+            .collect::<Vec<_>>();
+            
+        let results = join_all(futures).await;
+        
+        let jokes = results
+            .into_iter()
+            .filter_map(|result| match result {
+                Ok(joke) => Some(joke),
+                Err(e) => {
+                    eprintln!("Failed to get joke: {}", e);
+                    None
+                }
+            })
+            .collect();
+        
         Ok(jokes)
     }
 
